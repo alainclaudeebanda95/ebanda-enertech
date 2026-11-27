@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ebanda EnerTech</title>
+<meta name="description" content="Ebanda EnerTech — energy, IT and AI solutions for Calgary businesses and energy teams. Founded by Alain Claude Ebanda.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22512%22%20height%3D%22512%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222.00%22%20fill%3D%22%23101113%22/%3E%3Crect%20x%3D%2227.00%22%20y%3D%2225.00%22%20width%3D%2212.00%22%20height%3D%2250.00%22%20rx%3D%223.00%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%2227.00%22%20y%3D%2225.00%22%20width%3D%2246.00%22%20height%3D%2212.00%22%20rx%3D%223.00%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%2227.00%22%20y%3D%2263.00%22%20width%3D%2246.00%22%20height%3D%2212.00%22%20rx%3D%223.00%22%20fill%3D%22%23ffffff%22/%3E%3Crect%20x%3D%2227.00%22%20y%3D%2244.00%22%20width%3D%2230.00%22%20height%3D%2212.00%22%20rx%3D%223.00%22%20fill%3D%22%23ffffff%22/%3E%3Cpath%20transform%3D%22translate%280.00%200.00%29%20scale%281.0000%29%22%20d%3D%22M68%2038.5C68%2038.5%2075.5%2047.5%2075.5%2053A7.5%207.5%200%200%201%2060.5%2053C60.5%2047.5%2068%2038.5%2068%2038.5Z%22%20fill%3D%22%23ff4f00%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, precise, credible — an engineer who builds working AI.
+   IDEA: an inspection instrument — the page reads like a scan readout.
+   PICTURE: a detection frame scanning an undercarriage, boxes locking on.
+   COLOUR and TYPE: aluminium, black, one orange pointer; Geist 500 + Geist.
+   LAYOUT: hero readout with the scan, then long bands: projects, services, contact. */
+:root{color-scheme:light dark;
+  --bg:light-dark(#e9eaec,#141517);--panel:light-dark(#f6f6f7,#1d1f22);
+  --ink:light-dark(#101112,#ecedef);--mute:light-dark(#55585e,#a3a7ae);
+  --line:light-dark(#c9cbcf,#33363b);--acc:#ff4f00;--acc-ink:#fff}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Geist,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding:clamp(40px,6vw,88px) max(5vw,16px);border-top:1px solid var(--line)}
+h1,h2,h3{font-weight:500;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.02em}
+h2{font-size:clamp(28px,3.4vw,38px);line-height:1.1;letter-spacing:-.01em;margin-bottom:12px}
+h3{font-size:19px;line-height:1.25}
+p{margin:0 0 12px;max-width:68ch}
+.lead{color:var(--mute);font-size:17px}
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:20px;padding:12px max(5vw,16px);flex-wrap:wrap}
+.logo{font-weight:600;text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo{font-size:17px;gap:10px}.logo .lt{font-weight:400;color:var(--mute)}
+nav ul{display:flex;gap:18px;list-style:none;margin:0 0 0 auto;padding:0;flex-wrap:wrap}
+nav ul a{text-decoration:none;color:var(--mute);font-size:15px;padding:10px 0;display:inline-block}
+nav ul a:hover{color:var(--ink)}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(32px,5vw,72px) max(5vw,16px)}
+.role{color:var(--mute);font-size:17px;margin:14px 0 22px}
+.role b{color:var(--ink);font-weight:500}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;border-radius:8px;text-decoration:none;font-weight:500;border:1px solid var(--ink)}
+.btn.main{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.btn:focus-visible,nav a:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.scan{position:relative;aspect-ratio:4/3;background:#101113;border-radius:14px;overflow:hidden;box-shadow:0 20px 50px -20px rgba(0,0,0,.45)}
+.scan svg{position:absolute;inset:0;width:100%;height:100%}
+.sweep{animation:sweep 4.5s ease-in-out infinite alternate}
+@keyframes sweep{from{transform:translateX(0)}to{transform:translateX(520px)}}
+@media(prefers-reduced-motion:reduce){.sweep{animation:none}}
+.readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:28px}
+.readout div{background:var(--panel);padding:12px 14px}
+.readout b{display:block;font-size:15px;font-weight:500}
+.readout span{font-size:13px;color:var(--mute)}
+/* about */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
+.facts{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+.facts li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.facts span{color:var(--mute)}
+.mv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px;margin:40px 0 32px}
+.mv>div{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--acc);border-radius:10px;padding:20px}
+.mv h3{margin-bottom:8px}.mv p{margin:0;color:var(--mute)}
+.sub{margin:28px 0 10px}
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.values div{background:var(--panel);padding:16px 18px}
+.values b{display:block;font-weight:500;margin-bottom:4px}
+.values span{color:var(--mute);font-size:15px}
+footer p{max-width:90ch;margin:0 0 6px}
+.journey{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.journey li{position:relative;padding:0 0 18px 22px;display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 16px}
+.journey li::before{content:"";position:absolute;left:-7px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--acc)}
+.journey b{font-weight:500;white-space:nowrap}.journey span{color:var(--mute)}
+@media(max-width:600px){.journey li{grid-template-columns:minmax(0,1fr)}.lang{margin-left:auto}nav ul{order:3;flex-basis:100%}}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px;margin-top:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.card p{color:var(--mute);margin:0;font-size:15.5px}
+.card dl{margin:4px 0 0;font-size:14.5px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px}
+.card dt{color:var(--mute)}
+.card dd{margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px}
+.tags span{font-size:13px;border:1px solid var(--line);border-radius:99px;padding:3px 10px}
+.flag{font-size:13px;color:var(--acc);font-weight:500}
+.price{font-size:15px;font-weight:500}
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:24px;margin-top:24px}
+.skills h3{margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.skills h3::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--acc)}
+.skills ul{list-style:none;padding:0;margin:0;color:var(--mute)}
+.skills li{padding:3px 0}
+/* contact */
+.contact{background:#101113;color:#ecedef;border-top:0}
+.contact .lead{color:#a3a7ae}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin-top:24px}
+.links a{display:block;border:1px solid #33363b;border-radius:10px;padding:16px;text-decoration:none;min-height:44px}
+.links a:hover{border-color:var(--acc)}
+.links small{display:block;color:#a3a7ae;font-size:13px}
+.note{font-size:13px;color:#a3a7ae;margin-top:20px}
+footer{background:#101113;color:#a3a7ae;font-size:13px;padding:20px max(5vw,16px);border-top:1px solid #33363b}
+@media(max-width:860px){.hero,.two{grid-template-columns:minmax(0,1fr)}.readout{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){nav ul{margin-left:0;gap:14px}}
+.journey li{grid-template-columns:150px minmax(0,1fr)}
+.lang{margin-left:8px;min-width:44px;min-height:40px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-radius:8px;font:inherit;font-weight:500;cursor:pointer}
+.lang:hover{background:var(--acc);border-color:var(--acc);color:#fff}
+.demo .ticks{list-style:none;padding:0;margin:0 0 20px}
+.demo .ticks li{padding:6px 0 6px 28px;position:relative}
+.demo .ticks li::before{content:"";position:absolute;left:0;top:13px;width:14px;height:8px;border-left:2px solid var(--acc);border-bottom:2px solid var(--acc);transform:rotate(-45deg)}
+.small{font-size:13px;color:var(--mute);margin-top:12px}
+.phone{justify-self:center;width:min(100%,340px);background:#101113;border-radius:28px;padding:12px;box-shadow:0 20px 50px -20px rgba(0,0,0,.5)}
+.ph-head{background:#1f3a5f;color:#fff;border-radius:18px 18px 0 0;padding:12px 14px;font-size:14px;display:flex;align-items:center;gap:8px}
+.ph-head i{width:9px;height:9px;border-radius:50%;background:#4ade80}
+.ph-body{background:#f8f9fa;border-radius:0 0 18px 18px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:300px}
+.pm{max-width:85%;padding:9px 12px;border-radius:14px;font-size:14px;color:#111827}
+.pm.bot{background:#fff;border:1px solid #d9dce1;align-self:flex-start}
+.pm.user{background:#1f3a5f;color:#fff;align-self:flex-end}
+@media(max-width:600px){.journey li{grid-template-columns:minmax(0,1fr)}.lang{margin-left:auto}nav ul{order:3;flex-basis:100%}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;margin:24px 0 8px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.stat h3{margin-bottom:8px}.stat .fix{border-top:1px solid var(--line);padding-top:10px;margin-top:12px}.stat .fix b{display:block;color:var(--acc);font-weight:500;font-size:14px}
+.stat p{margin:0 0 10px}.stat a{font-size:13px;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:8px 14px;font-size:15px}
+.audit{margin-top:28px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#101113;color:#ecedef;border-radius:14px;padding:24px}
+.audit h3{margin-bottom:6px}.audit p{margin:0;color:#a3a7ae;max-width:62ch}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="#top"><svg viewBox="0 0 100 100" width="30" height="30" aria-hidden="true"><rect x="0" y="0" width="100" height="100" rx="22.00" fill="#101113"/><rect x="27.00" y="25.00" width="12.00" height="50.00" rx="3.00" fill="#ffffff"/><rect x="27.00" y="25.00" width="46.00" height="12.00" rx="3.00" fill="#ffffff"/><rect x="27.00" y="63.00" width="46.00" height="12.00" rx="3.00" fill="#ffffff"/><rect x="27.00" y="44.00" width="30.00" height="12.00" rx="3.00" fill="#ffffff"/><path transform="translate(0.00 0.00) scale(1.0000)" d="M68 38.5C68 38.5 75.5 47.5 75.5 53A7.5 7.5 0 0 1 60.5 53C60.5 47.5 68 38.5 68 38.5Z" fill="#ff4f00"/></svg><span>Ebanda <span class="lt">EnerTech</span></span></a>
+    <ul>
+      <li><a href="#about" data-i18n="nav_about"></a></li>
+      <li><a href="#problem" data-i18n="nav_problem"></a></li>
+      <li><a href="#projects" data-i18n="nav_projects"></a></li>
+      <li><a href="#demo" data-i18n="nav_demo"></a></li>
+      <li><a href="#services" data-i18n="nav_services"></a></li>
+      <li><a href="#contact" data-i18n="nav_contact"></a></li>
+    </ul>
+    <button class="lang" id="lang" type="button" aria-label="Switch language">FR</button>
+  </div>
+</nav>
+
+<header id="top" class="wrap hero">
+  <div>
+    <h1 data-i18n="h1"></h1>
+    <p class="role"><b>Ebanda EnerTech</b> · <span data-i18n="role"></span></p>
+    <p class="lead" data-i18n="lead"></p>
+    <div class="btns">
+      <a class="btn main" href="#demo" data-i18n="btn_demo"></a>
+      <a class="btn" href="#contact" data-i18n="btn_contact"></a>
+    </div>
+    <div class="readout" id="readout"></div>
+  </div>
+  <div class="scan" role="img" aria-label="AI scan detecting rust spots on a vehicle undercarriage">
+    <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2d32"/><stop offset="1" stop-color="#17191c"/></linearGradient>
+        <linearGradient id="beam" x1="0" x2="1"><stop offset="0" stop-color="#ff4f00" stop-opacity="0"/><stop offset=".85" stop-color="#ff4f00" stop-opacity=".28"/><stop offset="1" stop-color="#ff4f00" stop-opacity=".9"/></linearGradient>
+        <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#ffffff" stroke-opacity=".05"/></pattern>
+      </defs>
+      <rect width="640" height="480" fill="url(#grid)"/>
+      <!-- undercarriage -->
+      <rect x="60" y="150" width="520" height="180" rx="40" fill="url(#g1)" stroke="#3a3e44"/>
+      <rect x="110" y="190" width="420" height="22" rx="11" fill="#33373d"/>
+      <rect x="110" y="268" width="420" height="22" rx="11" fill="#33373d"/>
+      <rect x="300" y="170" width="40" height="140" rx="8" fill="#2c3035"/>
+      <g fill="#0c0d0f" stroke="#3a3e44"><ellipse cx="135" cy="150" rx="52" ry="22"/><ellipse cx="505" cy="150" rx="52" ry="22"/><ellipse cx="135" cy="330" rx="52" ry="22"/><ellipse cx="505" cy="330" rx="52" ry="22"/></g>
+      <!-- rust spots -->
+      <g fill="#a0522d" opacity=".85"><circle cx="200" cy="232" r="9"/><circle cx="213" cy="240" r="6"/><circle cx="420" cy="285" r="10"/><circle cx="433" cy="276" r="5"/><circle cx="360" cy="205" r="6"/></g>
+      <!-- detections -->
+      <g fill="none" stroke="#ff4f00" stroke-width="2.5"><rect x="182" y="216" width="46" height="38" rx="3"/><rect x="402" y="262" width="48" height="40" rx="3"/><rect x="346" y="192" width="28" height="26" rx="3"/></g>
+      <g font-family="Geist,system-ui,sans-serif" font-size="13" fill="#fff">
+        <rect x="182" y="196" width="88" height="20" fill="#ff4f00"/><text x="188" y="211">rust 0.91</text>
+        <rect x="402" y="242" width="88" height="20" fill="#ff4f00"/><text x="408" y="257">rust 0.87</text>
+        <rect x="346" y="172" width="88" height="20" fill="#ff4f00"/><text x="352" y="187">rust 0.64</text>
+      </g>
+      <!-- sweep -->
+      <g class="sweep"><rect x="-60" y="0" width="120" height="480" fill="url(#beam)"/><rect x="58" y="0" width="2" height="480" fill="#ff4f00"/></g>
+      <!-- frame corners -->
+      <g stroke="#ecedef" stroke-width="3" fill="none" opacity=".7"><path d="M24 64V24H64"/><path d="M576 24H616V64"/><path d="M24 416V456H64"/><path d="M616 416V456H576"/></g>
+      <text x="40" y="440" font-family="Geist,system-ui,sans-serif" font-size="14" fill="#a3a7ae">Illustration · undercarriage inspection concept</text>
+    </svg>
+  </div>
+</header>
+
+<section id="about" class="band">
+  <div class="wrap">
+    <div class="two">
+      <div>
+        <h2 data-i18n="about_h"></h2>
+        <p class="lead" data-i18n="about_lead"></p>
+        <p data-i18n="about_p1"></p>
+        <p data-i18n="about_p2"></p>
+      </div>
+      <ul class="facts" id="facts"></ul>
+    </div>
+    <h3 class="sub" data-i18n="journey_h"></h3>
+    <ol class="journey" id="journey"></ol>
+    <div class="mv" id="mv"></div>
+    <h3 class="sub" data-i18n="culture_h"></h3>
+    <div class="values" id="values"></div>
+  </div>
+</section>
+
+<section id="projects" class="band">
+  <div class="wrap">
+    <h2 data-i18n="proj_h"></h2>
+    <p class="lead" data-i18n="proj_lead"></p>
+    <div class="grid" id="projectGrid"></div>
+  </div>
+</section>
+
+<section id="demo" class="band demo">
+  <div class="wrap two">
+    <div>
+      <h2 data-i18n="demo_h"></h2>
+      <p class="lead" data-i18n="demo_lead"></p>
+      <ul class="ticks" id="demoList"></ul>
+      <div class="btns"><a class="btn main" href="demo/assistant-demo.html" data-i18n="demo_btn"></a></div>
+      <p class="small" data-i18n="demo_note"></p>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="ph-head"><i></i><span>Virtual Assistant</span></div>
+      <div class="ph-body" id="phone"></div>
+    </div>
+  </div>
+</section>
+
+<section id="problem" class="band">
+  <div class="wrap">
+    <h2 data-i18n="prob_h"></h2>
+    <p class="lead" data-i18n="prob_lead"></p>
+    <div class="stats" id="stats"></div>
+    <div class="audit"><div><h3 data-i18n="audit_h"></h3><p data-i18n="audit_p"></p></div><a class="btn main" href="#contact" data-i18n="audit_btn"></a></div>
+  </div>
+</section>
+
+<section id="services" class="band">
+  <div class="wrap">
+    <h2 data-i18n="serv_h"></h2>
+    <p class="lead" data-i18n="serv_lead"></p>
+    <div class="grid" id="serviceGrid"></div>
+    <h3 class="sub" data-i18n="skills_h"></h3>
+    <div class="skills" id="skillGrid"></div>
+  </div>
+</section>
+
+<section id="contact" class="band contact">
+  <div class="wrap">
+    <h2 data-i18n="contact_h"></h2>
+    <p class="lead" data-i18n="contact_lead"></p>
+    <div class="links">
+      <a href="mailto:ebandaenertech@gmail.com"><small data-i18n="email"></small>ebandaenertech@gmail.com</a>
+      <a href="https://www.linkedin.com/in/alain-ebanda"><small>LinkedIn</small>linkedin.com/in/alain-ebanda</a>
+      <a href="https://github.com/alainclaudeebanda95"><small>GitHub</small>github.com/alainclaudeebanda95</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><p>© 2026 Ebanda EnerTech · Alain Claude Ebanda · Calgary, Alberta</p><p data-i18n="footer"></p></div></footer>
+
+<script>
+{
+const T={
+ nav_about:["About","À propos"],nav_projects:["Projects","Projets"],nav_demo:["Demo","Démo"],nav_services:["Services","Services"],nav_contact:["Contact","Contact"],
+nav_problem:["Problem","Problème"],
+ prob_h:["The problem we solve","Le problème que nous réglons"],
+ prob_lead:["Every business is different. A garage loses calls, a cleaning company loses time on quotes, an energy team drowns in spreadsheets. That is why we start by listening, then build only what solves your problem.","Chaque entreprise est différente. Un garage perd des appels, une entreprise de nettoyage perd du temps sur ses devis, une équipe de l’énergie se noie dans les fichiers Excel. C’est pourquoi nous commençons par écouter, puis nous construisons seulement ce qui règle votre problème."],
+ who_h:["Who we help","Qui nous aidons"],
+ audit_h:["Free business audit","Audit gratuit de votre entreprise"],
+ audit_p:["Not sure where you lose time or customers? For one week, note the calls, messages and tasks that slip through. We then look at the numbers together and show you what can be fixed. No cost, no obligation.","Vous ne savez pas où vous perdez du temps ou des clients ? Pendant une semaine, notez les appels, messages et tâches qui vous échappent. Nous regardons ensuite les chiffres ensemble et vous montrons ce qui peut être réglé. Gratuit et sans engagement."],
+ audit_btn:["Book a free audit","Demander l’audit gratuit"],
+ h1:["Turning engineering problems into AI solutions.","Transformer les problèmes d’ingénierie en solutions d’IA."],
+ role:["Founded by Alain Claude Ebanda · Calgary, Alberta","Fondée par Alain Claude Ebanda · Calgary, Alberta"],
+ lead:["We build practical AI tools — chatbots, dashboards and computer vision — that save businesses time, capture every customer request and turn data into clear decisions.","Nous créons des outils d’IA concrets — chatbots, tableaux de bord et vision par ordinateur — qui font gagner du temps aux entreprises, ne laissent passer aucune demande client et transforment les données en décisions claires."],
+ btn_demo:["Try the live demo","Essayer la démo"],btn_contact:["Contact us","Nous contacter"],
+ about_h:["About Ebanda EnerTech","À propos d’Ebanda EnerTech"],
+ about_lead:["A Calgary energy and technology company founded by Alain Claude Ebanda. We bring practical, honest AI and IT solutions to small businesses and the energy sector.","Une entreprise calgarienne d’énergie et de technologie fondée par Alain Claude Ebanda. Nous apportons des solutions d’IA et d’informatique concrètes et honnêtes aux PME et au secteur de l’énergie."],
+ about_p1:["Alain’s background is in oil and gas: analysing reservoir and drilling data, modelling water and gas injection in the ECLIPSE reservoir simulator, and managing production finance, land records and regulatory documents. Today he brings that field knowledge together with AI and data analytics.","Le parcours d’Alain vient du pétrole et du gaz : analyse de données de réservoir et de forage, modélisation de l’injection d’eau et de gaz avec le simulateur ECLIPSE, et gestion des finances de production, des dossiers fonciers et des documents réglementaires. Aujourd’hui, il réunit cette connaissance du terrain avec l’IA et l’analyse de données."],
+ about_p2:["That mix of field knowledge and technical skill is what Ebanda EnerTech offers: we understand your operations before we write a line of code.","C’est ce mélange de terrain et de technique qu’offre Ebanda EnerTech : nous comprenons vos opérations avant d’écrire une seule ligne de code."],
+ journey_h:["The journey","Le parcours"],culture_h:["Our culture","Notre culture"],
+ proj_h:["Projects","Projets"],
+ proj_lead:["Applied work in energy, computer vision, NLP and data. Each card shows the problem, the approach and the tools.","Des projets appliqués en énergie, vision par ordinateur, NLP et données. Chaque fiche présente le problème, l’approche et les outils."],
+ demo_h:["Live demo: a virtual assistant for your business","Démo en direct : un assistant virtuel pour votre entreprise"],
+ demo_lead:["Pick a business type — auto repair, cleaning, salon, restaurant, real estate or plumbing — and see what its customers would see at 10 p.m.: an assistant that answers questions and collects requests.","Choisissez un type d’entreprise — garage, nettoyage, salon, restaurant, immobilier ou plomberie — et voyez ce que ses clients verraient à 22 h : un assistant qui répond aux questions et recueille les demandes."],
+ demo_btn:["Open the demo","Ouvrir la démo"],
+ demo_note:["Fictional businesses and sample data. No message is sent.","Entreprises fictives et données d’exemple. Aucun message n’est envoyé."],
+ serv_h:["Services for businesses","Services aux entreprises"],
+ serv_lead:["Practical AI for Calgary businesses: fewer missed requests, faster quotes, clearer numbers. Every project starts with a free 20-minute consultation and a demo on sample data.","De l’IA concrète pour les entreprises de Calgary : moins de demandes perdues, des devis plus rapides, des chiffres plus clairs. Chaque projet commence par une consultation gratuite de 20 minutes et une démo sur des données d’exemple."],
+ skills_h:["Technical skills","Compétences techniques"],
+ contact_h:["Let’s talk about your project.","Parlons de votre projet."],
+ contact_lead:["Business owner or recruiter, write to us directly. We usually reply within one business day.","Entrepreneur ou recruteur, écrivez-nous directement. Nous répondons en général en un jour ouvrable."],
+ email:["Email","Courriel"],
+ footer:["Our AI assistants always tell people they are talking to an AI and offer a way to reach a person. Personal information collected through our tools is handled in line with Alberta’s Personal Information Protection Act (PIPA), used only for the purpose stated and never sold.","Nos assistants IA indiquent toujours qu’ils sont une IA et offrent un moyen de joindre une personne. Les renseignements personnels recueillis par nos outils sont traités conformément à la loi albertaine sur la protection des renseignements personnels (PIPA), utilisés seulement pour l’objectif indiqué et jamais vendus."]
+};
+const readout=[["Vision","Vision","Detection, CNNs","Détection, CNN"],["Language","Langage","Chatbots, NLP","Chatbots, NLP"],["Data","Données","Dashboards, ML","Tableaux de bord, ML"],["Energy","Énergie","Reservoir simulation","Simulation de réservoir"]];
+const facts=[["Founder","Fondateur","Alain Claude Ebanda","Alain Claude Ebanda"],["Based in","Basée à","Calgary, Alberta","Calgary, Alberta"],["Expertise","Expertise","Oil and gas, data analytics and AI","Pétrole et gaz, analyse de données et IA"],["Education","Formation","Bachelor’s and Master’s, Petroleum Engineering","Baccalauréat et maîtrise en génie pétrolier"],["Languages","Langues","English, French","Anglais, français"],["We serve","Clients","Service businesses, local shops and energy teams","Entreprises de services, commerces et équipes de l’énergie"]];
+const journey=[["Education","Études","Bachelor’s and Master’s degrees in petroleum engineering. Master’s research on secondary recovery: water and gas injection to optimize oil recovery, modelled with ECLIPSE.","Baccalauréat et maîtrise en génie pétrolier. Recherche de maîtrise sur la récupération secondaire : injection d’eau et de gaz pour optimiser la récupération du pétrole, modélisée avec ECLIPSE."],
+ ["Oil company","Compagnie pétrolière","Administration: records, reports and office systems.","Administration : dossiers, rapports et systèmes de bureau."],
+ ["Geoscience","Géosciences","Data analysis in geoscience and oil and gas: field studies, drilling programs and reservoir performance.","Analyse de données en géosciences et pétrole : études de terrain, programmes de forage et performance des réservoirs."],
+ ["Energy services","Services énergétiques","Data analyst in Canada: production finance, royalties, land leases and regulatory filings. Oil and gas administration diploma.","Analyste de données au Canada : finances de production, redevances, baux fonciers et dépôts réglementaires. Diplôme en administration pétrolière."],
+ ["AI","IA","Artificial Intelligence certification at SAIT, AI Pathways scholarship from Amii, applied AI capstone in corrosion inspection, and the founding of Ebanda EnerTech.","Certification en intelligence artificielle au SAIT, bourse AI Pathways de l’Amii, projet appliqué d’inspection de la corrosion, et création d’Ebanda EnerTech."]];
+const mv=[["Mission","Mission","Give small businesses and energy teams the same smart tools big companies use — simple, affordable and built around how they already work.","Donner aux PME et aux équipes du secteur de l’énergie les mêmes outils intelligents que les grandes entreprises — simples, abordables et adaptés à leur façon de travailler."],
+ ["Vision","Vision","A Calgary where every local business can answer every customer, quote faster and decide with clear data, thanks to AI they trust.","Une ville de Calgary où chaque entreprise locale répond à tous ses clients, fait ses devis plus vite et décide avec des données claires, grâce à une IA de confiance."],
+ ["Our goals","Nos objectifs","In 2027: help our first 10 Calgary businesses save measurable time each week, and grow a data and AI practice for the energy sector.","En 2027 : aider nos 10 premières entreprises de Calgary à gagner un temps mesurable chaque semaine, et développer une offre en données et IA pour le secteur de l’énergie."]];
+const values=[["Honest AI","IA honnête","Our assistants always say they are AI and hand off to a person when needed. No fake reviews, no inflated promises.","Nos assistants disent toujours qu’ils sont une IA et passent la main à une personne au besoin. Pas de faux avis, pas de promesses exagérées."],
+ ["Privacy first","Vie privée d’abord","We collect only what a tool needs, protect it, and follow Alberta’s privacy law. Your customer data stays yours.","Nous recueillons seulement ce dont un outil a besoin, nous le protégeons et suivons la loi albertaine sur la vie privée. Les données de vos clients restent les vôtres."],
+ ["Results you can see","Des résultats visibles","Every project has a clear goal — hours saved, requests captured — agreed before we start.","Chaque projet a un objectif clair — heures gagnées, demandes recueillies — fixé avant de commencer."],
+ ["Clear pricing","Des prix clairs","Fixed setup prices and plain monthly fees. Any third-party cost is explained up front.","Des prix d’installation fixes et des frais mensuels simples. Tout coût externe est expliqué dès le départ."],
+ ["Local and bilingual","Local et bilingue","Based in Calgary, working in English and French, and available to meet in person.","Basés à Calgary, nous travaillons en anglais et en français et pouvons vous rencontrer en personne."]];
+const projects=[
+ {t:["Corrosion Detection with Computer Vision","Détection de la corrosion par vision par ordinateur"],org:["Applied AI capstone · Industrial client","Projet appliqué en IA · Client industriel"],
+  p:["Spotting rust on vehicles and equipment by eye is slow and inconsistent.","Repérer la rouille sur des véhicules et de l’équipement à l’œil nu est lent et inégal."],
+  s:["Trained and applied a YOLO11 segmentation model to detect rust in images and video, reporting confidence, affected area and severity, with a dashboard to compare model performance (precision, recall).","Entraînement et application d’un modèle de segmentation YOLO11 pour détecter la rouille sur images et vidéos, avec la confiance, la surface touchée et la gravité, et un tableau de bord pour comparer les modèles (précision, rappel)."],
+  r:["Designed the system architecture and deployed a working Streamlit app to the cloud.","Conception de l’architecture et déploiement d’une application Streamlit fonctionnelle dans le cloud."],tags:["YOLO11","Segmentation","Streamlit","Cloud"]},
+ {t:["Secondary Recovery Optimization","Optimisation de la récupération secondaire"],org:["Master’s research · Petroleum engineering","Recherche de maîtrise · Génie pétrolier"],
+  p:["As reservoir pressure and production decline, a large share of the oil stays in place.","Quand la pression du réservoir et la production baissent, une grande partie du pétrole reste en place."],
+  s:["Reservoir simulation of water and gas injection scenarios to compare strategies and maximize oil recovery.","Simulation de réservoir de scénarios d’injection d’eau et de gaz pour comparer les stratégies et maximiser la récupération."],
+  r:["Recovery strategies compared and optimized in simulation.","Stratégies de récupération comparées et optimisées en simulation."],tags:["ECLIPSE","Reservoir Simulation","Waterflooding","Gas Injection"]},
+ {t:["NYC Energy Benchmarking Insights","Analyse de la consommation d’énergie à New York"],org:["Team data science project","Projet d’équipe en science des données"],
+  p:["Understand what drives energy use across New York City buildings.","Comprendre ce qui influence la consommation d’énergie des bâtiments de New York."],
+  s:["Data cleaning, exploratory analysis and modelling on public energy benchmarking data.","Nettoyage des données, analyse exploratoire et modélisation sur des données publiques de consommation."],
+  r:["Key drivers of building energy use identified and visualized.","Principaux facteurs de consommation identifiés et visualisés."],tags:["Data Analytics","Machine Learning","Energy"]},
+ {t:["Pneumonia Detection from Chest X-Rays","Détection de la pneumonie sur radiographies"],org:["SAIT AI program","Programme d’IA du SAIT"],
+  p:["Classify chest X-ray images as pneumonia or normal.","Classer des radiographies pulmonaires en pneumonie ou normales."],
+  s:["A convolutional neural network trained and evaluated on labelled chest X-rays.","Un réseau de neurones convolutif entraîné et évalué sur des radiographies étiquetées."],
+  r:["Image classifier built and evaluated end to end.","Classificateur d’images construit et évalué de bout en bout."],tags:["CNN","Deep Learning","Computer Vision"]},
+ {t:["Object Detection and Segmentation","Détection et segmentation d’objets"],org:["SAIT AI program","Programme d’IA du SAIT"],
+  p:["Locate and outline objects in both still images and video.","Repérer et délimiter des objets sur des images et en vidéo."],
+  s:["Detection and segmentation models applied to images, then frame by frame to video.","Modèles de détection et de segmentation appliqués aux images, puis image par image à la vidéo."],
+  r:["Pipeline working on both images and video.","Pipeline fonctionnel sur images et vidéo."],tags:["YOLO","Segmentation","Video"]},
+ {t:["Neural Network Text Classification","Classification de texte par réseau de neurones"],org:["SAIT AI program","Programme d’IA du SAIT"],
+  p:["Sort short texts into categories automatically.","Classer automatiquement de courts textes par catégorie."],
+  s:["A function-based neural network for text classification, from preprocessing to evaluation.","Un réseau de neurones pour la classification de texte, du prétraitement à l’évaluation."],
+  r:["Text classifier built and evaluated end to end.","Classificateur de texte construit et évalué de bout en bout."],tags:["NLP","Neural Networks","Text"]}
+];
+const services=[
+ {t:["AI Chatbot and Quote Requests","Chatbot IA et demandes de devis"],p:["A website assistant that answers common questions 24/7 and collects quote and appointment requests, so no lead is lost after hours.","Un assistant sur votre site qui répond aux questions 24 h sur 24 et recueille les demandes de devis et de rendez-vous, pour ne perdre aucun client après les heures d’ouverture."],
+  who:["Garages, cleaning, salons, restaurants, trades, real estate","Garages, nettoyage, salons, restaurants, métiers, immobilier"],price:["From $350 setup","À partir de 350 $ d’installation"],flag:["Main offer","Offre principale"]},
+ {t:["Data Dashboards","Tableaux de bord"],p:["Clear dashboards and automated reports from your spreadsheets or databases, including production and operations data for oil and gas.","Des tableaux de bord clairs et des rapports automatiques à partir de vos fichiers ou bases de données, y compris les données de production du pétrole et du gaz."],
+  who:["Small businesses, energy sector","PME, secteur de l’énergie"],price:["From $200 per project","À partir de 200 $ par projet"],flag:null},
+ {t:["AI Phone Receptionist","Réceptionniste téléphonique IA"],p:["An automated assistant that answers calls, tells callers it is an AI, takes requests and passes urgent calls to a person.","Un assistant automatisé qui répond aux appels, dit qu’il est une IA, prend les demandes et transfère les appels urgents à une personne."],
+  who:["Any business that takes bookings by phone","Toute entreprise qui prend des rendez-vous par téléphone"],price:["Quote on request","Prix sur demande"],flag:["Coming soon","Bientôt"]}
+];
+const skills=[
+ {h:["AI and Machine Learning","IA et apprentissage automatique"],i:[["Computer vision: CNNs, YOLO detection and segmentation","Vision par ordinateur : CNN, détection et segmentation YOLO"],["NLP: text classification, chatbots","NLP : classification de texte, chatbots"],["Supervised and unsupervised learning","Apprentissage supervisé et non supervisé"],["ML system design and model monitoring","Conception de systèmes ML et suivi des modèles"]]},
+ {h:["Data and Programming","Données et programmation"],i:[["Python, R, SQL","Python, R, SQL"],["Jupyter, RStudio, VS Code","Jupyter, RStudio, VS Code"],["Applied statistics and predictive modelling","Statistiques appliquées et modélisation prédictive"],["Excel analysis and reporting","Analyse et rapports Excel"]]},
+ {h:["Apps and Cloud","Applications et cloud"],i:[["Streamlit apps and dashboards","Applications et tableaux de bord Streamlit"],["Cloud deployment","Déploiement dans le cloud"],["HTML, CSS, JavaScript","HTML, CSS, JavaScript"],["Git and GitHub","Git et GitHub"]]},
+ {h:["Energy and Operations","Énergie et opérations"],i:[["Reservoir simulation (ECLIPSE)","Simulation de réservoir (ECLIPSE)"],["Secondary recovery: water and gas injection","Récupération secondaire : injection d’eau et de gaz"],["Production accounting and royalties","Comptabilité de production et redevances"],["Land records and regulatory filings","Dossiers fonciers et dépôts réglementaires"]]}
+];
+const demoList=[["6 business types in one demo","6 types d’entreprises dans une seule démo"],["Answers questions on hours, prices and services","Répond aux questions sur les horaires, les prix et les services"],["Collects bookings, quotes, viewings and call-back requests","Recueille les demandes de rendez-vous, de devis, de visite et de rappel"],["Says it is a virtual assistant and never confirms on its own","Se présente comme un assistant virtuel et ne confirme jamais seul"],["Works on phone and computer","Fonctionne sur téléphone et ordinateur"]];
+const phone=[["bot","Hi! I am the virtual assistant for your auto shop. How can I help?","Bonjour ! Je suis l’assistant virtuel de votre garage. Comment puis-je vous aider ?"],["user","How much is an oil change?","Combien coûte une vidange ?"],["bot","An oil change starts at $79.99 and takes about 30 minutes. Would you like to book one?","Une vidange commence à 79,99 $ et prend environ 30 minutes. Voulez-vous prendre rendez-vous ?"],["user","Yes, tomorrow morning","Oui, demain matin"],["bot","Sure. What is your name?","Bien sûr. Quel est votre nom ?"]];
+const stats=[
+ ["Auto repair and trades","Garages et métiers","Hands are busy in the shop, so calls go unanswered and customers call the next business.","Les mains sont occupées à l’atelier : les appels restent sans réponse et le client appelle ailleurs.","An assistant that answers common questions and collects booking requests, day and night.","Un assistant qui répond aux questions courantes et recueille les demandes de rendez-vous, jour et nuit."],
+ ["Cleaning and real estate","Nettoyage et immobilier","Quotes and follow-ups take time, and leads go cold before anyone replies.","Les devis et les relances prennent du temps, et les clients potentiels se refroidissent avant qu’on leur réponde.","Smart forms that collect the right details and send them straight to you.","Des formulaires intelligents qui recueillent les bons détails et vous les envoient aussitôt."],
+ ["Salons and restaurants","Salons et restaurants","The same questions all day long, plus bookings to manage and no-shows.","Les mêmes questions toute la journée, des réservations à gérer et des absences.","Automatic answers and booking requests, so your team can focus on clients on site.","Des réponses et demandes de réservation automatiques, pour que l’équipe se concentre sur les clients sur place."],
+ ["Energy and oil and gas teams","Équipes de l’énergie et du pétrole","Data scattered across spreadsheets, manual reports and heavy regulatory paperwork.","Des données éparpillées dans des fichiers Excel, des rapports faits à la main et beaucoup de paperasse réglementaire.","Clear dashboards and automated reports built by someone who knows the field.","Des tableaux de bord clairs et des rapports automatiques, faits par quelqu’un qui connaît le terrain."]];
+const who=[["Auto repair shops","Garages automobiles"],["Cleaning companies","Entreprises de nettoyage"],["Salons and spas","Salons et spas"],["Restaurants","Restaurants"],["Real estate agents","Agents immobiliers"],["Trades: plumbing, HVAC, electrical","Métiers : plomberie, chauffage, électricité"],["Retail shops","Commerces de détail"],["Energy and oil and gas teams","Équipes de l’énergie et du pétrole"]];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let L=0;
+try{if(localStorage.getItem('lang')==='fr')L=1}catch(e){}
+function render(){
+ document.documentElement.lang=L?'fr':'en';
+ document.querySelectorAll('[data-i18n]').forEach(el=>{const v=T[el.dataset.i18n];if(v)el.textContent=v[L]});
+ document.getElementById('lang').textContent=L?'EN':'FR';
+ document.getElementById('readout').innerHTML=readout.map(r=>`<div><b>${esc(r[L])}</b><span>${esc(r[2+L])}</span></div>`).join('');
+ document.getElementById('facts').innerHTML=facts.map(f=>`<li><span>${esc(f[L])}</span>${esc(f[2+L])}</li>`).join('');
+ document.getElementById('journey').innerHTML=journey.map(j=>`<li><b>${esc(j[L])}</b><span>${esc(j[2+L])}</span></li>`).join('');
+ document.getElementById('mv').innerHTML=mv.map(m=>`<div><h3>${esc(m[L])}</h3><p>${esc(m[2+L])}</p></div>`).join('');
+ document.getElementById('values').innerHTML=values.map(v=>`<div><b>${esc(v[L])}</b><span>${esc(v[2+L])}</span></div>`).join('');
+ const lab=L?['Problème','Solution','Résultat']:['Problem','Solution','Outcome'];
+ document.getElementById('projectGrid').innerHTML=projects.map(x=>`<article class="card"><span class="flag">${esc(x.org[L])}</span><h3>${esc(x.t[L])}</h3><dl><dt>${lab[0]}</dt><dd>${esc(x.p[L])}</dd><dt>${lab[1]}</dt><dd>${esc(x.s[L])}</dd><dt>${lab[2]}</dt><dd>${esc(x.r[L])}</dd></dl><div class="tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div></article>`).join('');
+ document.getElementById('serviceGrid').innerHTML=services.map(x=>`<article class="card">${x.flag?`<span class="flag">${esc(x.flag[L])}</span>`:''}<h3>${esc(x.t[L])}</h3><p>${esc(x.p[L])}</p><p><b>${L?'Pour':'For'} :</b> ${esc(x.who[L])}</p><span class="price">${esc(x.price[L])}</span></article>`).join('').replace(/For :/g,'For:');
+ document.getElementById('skillGrid').innerHTML=skills.map(x=>`<div><h3>${esc(x.h[L])}</h3><ul>${x.i.map(i=>`<li>${esc(i[L])}</li>`).join('')}</ul></div>`).join('');
+ document.getElementById('demoList').innerHTML=demoList.map(d=>`<li>${esc(d[L])}</li>`).join('');
+ document.getElementById('phone').innerHTML=phone.map(m=>`<div class="pm ${m[0]}">${esc(m[1+L])}</div>`).join('');
+ document.getElementById('stats').innerHTML=stats.map(x=>`<div class="stat"><h3>${esc(x[L])}</h3><p>${esc(x[2+L])}</p><p class="fix"><b>${L?'Notre réponse':'What we do'}</b>${esc(x[4+L])}</p></div>`).join('');
+}
+document.getElementById('lang').addEventListener('click',()=>{L=1-L;try{localStorage.setItem('lang',L?'fr':'en')}catch(e){}render()});
+render();
+}
+</script>
+</body>
+</html>

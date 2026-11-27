@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virtual Assistant Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly local business, practical, trustworthy.
+   IDEA: one assistant, many businesses — pick an industry and the whole site and assistant switch.
+   PICTURE: the chat window itself, open on load, ready to use.
+   COLOUR and TYPE: each business gets its own brand colour; Ebanda orange for actions; Geist.
+   LAYOUT: industry picker on top, simple business site behind, chat panel bottom-right. */
+:root{color-scheme:light;--bg:#f3f4f6;--ink:#111827;--mute:#5b6270;--line:#d9dce1;--brand:#1f3a5f;--acc:#ff4f00}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;font:16px/1.55 Geist,system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:clip}
+.demo-bar{background:#101113;color:#ecedef;font-size:13px;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center}
+.demo-bar b{color:var(--acc);font-weight:500}
+.picker{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.picker button{border:1px solid #444;background:transparent;color:#ecedef;border-radius:99px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:36px}
+.picker button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+header{background:var(--brand);color:#fff;padding:18px max(5vw,16px);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0;font-weight:600}
+header span{font-size:14px;opacity:.85}
+.hero{padding:clamp(28px,5vw,60px) max(5vw,16px);max-width:1100px}
+.hero h2{font-size:clamp(28px,4vw,42px);line-height:1.1;margin:0 0 12px;font-weight:600}
+.hero p{color:var(--mute);max-width:60ch}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;padding:0 max(5vw,16px) 140px;max-width:1100px}
+.cards div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.cards b{display:block;font-weight:500}.cards small{color:var(--mute)}
+.chat{position:fixed;right:20px;bottom:20px;width:380px;max-width:calc(100vw - 24px);height:540px;max-height:calc(100vh - 140px);background:#fff;border-radius:16px;box-shadow:0 20px 50px -12px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+.chat.closed{display:none}
+.chead{background:var(--brand);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%;background:#4ade80;flex:none}
+.chead b{font-weight:500;display:block}.chead small{opacity:.8;font-size:12px}
+.chead button{margin-left:auto;background:none;border:0;color:#fff;font-size:22px;cursor:pointer;min-width:44px;min-height:44px}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#f8f9fa}
+.m{max-width:85%;padding:10px 13px;border-radius:14px;font-size:15px;white-space:pre-line}
+.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.user{background:var(--brand);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.summary{background:#fff7f2;border:1px solid #ffd2bd}
+.quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 10px;background:#f8f9fa}
+.quick button{border:1px solid var(--brand);background:#fff;color:var(--brand);border-radius:99px;padding:8px 12px;font:inherit;font-size:14px;cursor:pointer;min-height:40px}
+.quick button:hover{background:var(--brand);color:#fff}
+form.in{display:flex;border-top:1px solid var(--line);background:#fff}
+form.in input{flex:1;border:0;padding:14px;font:inherit;font-size:16px;outline:none}
+form.in button{border:0;background:var(--acc);color:#fff;padding:0 18px;font:inherit;font-weight:500;cursor:pointer;min-width:64px}
+.foot{font-size:11px;color:var(--mute);text-align:center;padding:6px;background:#fff;border-top:1px solid var(--line)}
+.launcher{position:fixed;right:20px;bottom:20px;background:var(--acc);color:#fff;border:0;border-radius:99px;padding:14px 20px;font:inherit;font-weight:500;cursor:pointer;box-shadow:0 10px 30px -8px rgba(0,0,0,.4);display:none;min-height:48px}
+.launcher.show{display:block}
+button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media(max-width:600px){.chat{right:12px;bottom:12px;height:calc(100vh - 170px)}}
+</style>
+</head>
+<body>
+<div class="demo-bar"><span><b>Demo</b> by Ebanda EnerTech · fictional businesses and sample data · nothing is sent</span><div class="picker" id="picker" role="group" aria-label="Choose a business type"></div></div>
+<header><h1 id="bizName"></h1><span id="bizInfo"></span></header>
+<section class="hero"><h2 id="bizTitle"></h2><p id="bizText"></p></section>
+<section class="cards" id="bizCards"></section>
+
+<div class="chat" id="chat" role="dialog" aria-label="Virtual assistant">
+  <div class="chead"><span class="dot"></span><div><b id="chatName"></b><small>Virtual assistant · a person reviews every request</small></div><button id="close" aria-label="Close chat">×</button></div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <div class="quick" id="quick"></div>
+  <form class="in" id="form"><input id="txt" autocomplete="off" placeholder="Type your question…" aria-label="Message"><button>Send</button></form>
+  <div class="foot">Your details are used only to answer your request.</div>
+</div>
+<button class="launcher" id="launch">Chat with us</button>
+
+<script>
+{
+const BIZ={
+ garage:{label:'Auto repair',name:'Your Auto Shop',color:'#1f3a5f',info:'Auto repair · Calgary · Mon–Fri 8:00–17:30',
+  title:'Honest repairs, done right the first time.',text:'Oil changes, brakes, tires, inspections and diagnostics for all makes. Ask our assistant any time, even after hours.',
+  cards:[['Oil change','From $79.99 · about 30 min'],['Brake service','Free brake check'],['Tire change','Seasonal swap from $69.99'],['Pre-purchase inspection','$149 · written report']],
+  hours:'We are open Monday to Friday, 8:00 to 17:30, and closed on weekends.',
+  faq:[[['oil'],'An oil change starts at $79.99 and takes about 30 minutes. Would you like to book one?','book'],[['brake','squeak','grind'],'We offer a free brake check. You approve the quote before any work.','quote'],[['tire','tyre','winter'],'A seasonal tire swap starts at $69.99. Storage is available.','book'],[['inspection','buying'],'A pre-purchase inspection is $149 with a written report.','book']],
+  flows:{book:['Booking request',[['name','What is your name?'],['vehicle','What vehicle is it? (year, make and model)'],['service','Which service do you need?'],['when','When would you prefer to come in?'],['contact','What phone number or email should we use?']]],
+         quote:['Quote request',[['name','What is your name?'],['vehicle','What vehicle is it?'],['issue','Describe the problem or the work you need.'],['contact','What phone number or email should we send the quote to?']]]},
+  menu:[['Book a service','book'],['Get a quote','quote']]},
+ cleaning:{label:'Cleaning',name:'Your Cleaning Company',color:'#0f6e6e',info:'Home and office cleaning · Calgary · 7 days a week',
+  title:'A spotless home without lifting a finger.',text:'Regular cleaning, deep cleaning, move-in and move-out, and offices. Get a quote in two minutes, even at midnight.',
+  cards:[['Regular cleaning','From $129 per visit'],['Deep cleaning','Quote based on size'],['Move-in / move-out','Quote based on size'],['Office cleaning','Weekly or monthly plans']],
+  hours:'Our team works 7 days a week, from 8:00 to 18:00. The office answers requests the next morning.',
+  faq:[[['regular','weekly','biweekly'],'Regular cleaning starts at $129 per visit for a standard home. Would you like a quote for your home?','quote'],[['deep','move','moving'],'Deep and move-out cleaning are priced by size. I can collect the details for a quote.','quote'],[['office','commercial'],'We offer weekly and monthly office plans. Would you like a quote?','quote'],[['product','pet','eco','allerg'],'We use eco-friendly products and can adapt for pets and allergies. Just mention it in your request.',null]],
+  flows:{quote:['Quote request',[['name','What is your name?'],['type','Is it a home or an office?'],['size','How big is it? (bedrooms, bathrooms or square feet)'],['service','Which service: regular, deep, or move-out?'],['when','When would you like it done?'],['contact','What phone number or email should we send the quote to?']]]},
+  menu:[['Get a quote','quote']]},
+ salon:{label:'Salon',name:'Your Salon',color:'#7a2e5e',info:'Hair salon · Calgary · Tue–Sat 9:00–19:00',
+  title:'Look your best, book in seconds.',text:'Cuts, colour, styling and treatments. Ask a question or request an appointment any time.',
+  cards:[['Haircut','From $45'],['Colour','From $95 · consultation'],['Blow-dry and style','From $40'],['Treatments','Ask in the chat']],
+  hours:'We are open Tuesday to Saturday, 9:00 to 19:00, and closed Sunday and Monday.',
+  faq:[[['cut','trim'],'Haircuts start at $45. Would you like to request an appointment?','book'],[['colour','color','highlight','balayage'],'Colour starts at $95, and we start with a short consultation. Would you like to request one?','book'],[['style','blow','wedding','event'],'Styling starts at $40. For weddings and events, we recommend booking early.','book'],[['cancel','late','no-show'],'Please let us know 24 hours in advance if you need to cancel or move an appointment.',null]],
+  flows:{book:['Appointment request',[['name','What is your name?'],['service','Which service would you like?'],['stylist','Do you have a preferred stylist? (or say "any")'],['when','Which day and time suit you?'],['contact','What phone number or email should we use to confirm?']]]},
+  menu:[['Request an appointment','book']]},
+ restaurant:{label:'Restaurant',name:'Your Restaurant',color:'#7a3b12',info:'Bistro · Calgary · Daily 11:00–22:00',
+  title:'Fresh local food by the river.',text:'Lunch, dinner and weekend brunch. Ask about the menu or request a table any time.',
+  cards:[['Lunch','Daily from 11:00'],['Dinner','Daily from 17:00'],['Weekend brunch','Sat–Sun 10:00–14:00'],['Private events','Up to 40 guests']],
+  hours:'We are open every day from 11:00 to 22:00, with brunch on weekends from 10:00.',
+  faq:[[['menu','food','dish'],'Our menu changes with the season: local beef, fish, pasta and vegetarian dishes. Would you like to reserve a table?','book'],[['vegan','vegetarian','gluten','allerg'],'We have vegetarian and gluten-free options. Please mention any allergy in your request so the kitchen is informed.','book'],[['brunch'],'Weekend brunch is served Saturday and Sunday from 10:00 to 14:00.','book'],[['event','party','group','birthday'],'We host private events for up to 40 guests. I can take your request.','event']],
+  flows:{book:['Table request',[['name','What is your name?'],['party','How many people?'],['when','Which day and time?'],['notes','Any allergy or special occasion?'],['contact','What phone number or email should we use to confirm?']]],
+         event:['Private event request',[['name','What is your name?'],['party','How many guests?'],['when','Which date?'],['contact','What phone number or email should we use?']]]},
+  menu:[['Reserve a table','book'],['Private event','event']]},
+ realestate:{label:'Real estate',name:'Your Real Estate Agency',color:'#2d4a2b',info:'Real estate agents · Calgary',
+  title:'Buy or sell with a local team.',text:'Home valuations, viewings and advice for buyers and sellers. Leave your request any time and an agent will follow up.',
+  cards:[['Free home valuation','Request in 2 minutes'],['Book a viewing','For any listing'],['First-time buyers','Free consultation'],['Sellers','Marketing plan included']],
+  hours:'Our agents are available Monday to Saturday, 9:00 to 19:00. Requests sent after hours are answered the next day.',
+  faq:[[['value','worth','valuation','sell'],'We offer a free home valuation. An agent reviews your details and contacts you.','value'],[['view','visit','showing','listing'],'I can take a viewing request for any listing. An agent will confirm the time with you.','view'],[['first','buyer','mortgage'],'We offer a free consultation for first-time buyers. For mortgage questions, we can connect you with a mortgage professional.','view']],
+  flows:{value:['Home valuation request',[['name','What is your name?'],['address','What is the property address or neighbourhood?'],['home','What type of home is it? (house, condo, townhouse)'],['contact','What phone number or email should the agent use?']]],
+         view:['Viewing request',[['name','What is your name?'],['listing','Which property or area are you interested in?'],['when','When are you available?'],['contact','What phone number or email should the agent use?']]]},
+  menu:[['Free home valuation','value'],['Book a viewing','view']]},
+ trades:{label:'Plumbing & HVAC',name:'Your Plumbing Company',color:'#24406e',info:'Plumbing, heating and cooling · Calgary',
+  title:'Fast, fair plumbing and heating.',text:'Repairs, installations and maintenance for homes and small businesses. Request service any time.',
+  cards:[['Plumbing repairs','Leaks, drains, water heaters'],['Furnace service','Tune-ups and repairs'],['Air conditioning','Installation and service'],['Free estimates','For new installations']],
+  hours:'Our office is open Monday to Friday, 8:00 to 17:00. Requests are answered the next business day.',
+  faq:[[['gas','smell'],'If you smell gas, leave the building now and call your gas utility’s emergency line or 911 from outside. Do not use this chat for emergencies.',null],[['leak','drain','clog','water heater','toilet'],'We repair leaks, drains and water heaters. I can take a service request.','service'],[['furnace','heat','cold'],'We service and repair furnaces. I can take a service request.','service'],[['install','new','estimate','air condition','ac'],'We give free estimates for new installations. I can take your request.','estimate']],
+  flows:{service:['Service request',[['name','What is your name?'],['issue','What is the problem?'],['address','What is the address or neighbourhood?'],['when','When are you available?'],['contact','What phone number should we call?']]],
+         estimate:['Estimate request',[['name','What is your name?'],['project','What would you like installed?'],['address','What is the address or neighbourhood?'],['contact','What phone number or email should we use?']]]},
+  menu:[['Request service','service'],['Free estimate','estimate']]}
+};
+const $=id=>document.getElementById(id);
+const msgs=$('msgs'),quick=$('quick');
+let B,flow=null,step=0,data={};
+const CALLBACK=['Call-back request',[['name','What is your name?'],['contact','What phone number should we call?'],['topic','In a few words, what is it about?']]];
+const add=(t,who='bot',cls='')=>{const d=document.createElement('div');d.className='m '+who+' '+cls;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight};
+const say=(t,delay=450)=>setTimeout(()=>add(t),delay);
+const setQuick=list=>{quick.innerHTML='';list.forEach(([label,fn])=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=()=>{add(label,'user');fn()};quick.appendChild(b)})};
+const getFlow=k=>k==='callback'?CALLBACK:B.flows[k];
+function menu(){setQuick([...B.menu.map(([l,k])=>[l,()=>start(k)]),['Hours',()=>say(B.hours)],['Talk to a person',()=>start('callback')]])}
+function start(k){flow=k;step=0;data={};setQuick([['Cancel',cancel]]);say('Sure. I will ask a few quick questions.');say(getFlow(k)[1][0][1],900)}
+function cancel(){flow=null;say('No problem, request cancelled. How else can I help?');menu()}
+function next(text){
+  const f=getFlow(flow);data[f[1][step][0]]=text;step++;
+  if(step<f[1].length){say(f[1][step][1]);return}
+  const lines=Object.entries(data).map(([k,v])=>'• '+k[0].toUpperCase()+k.slice(1)+': '+v).join('\n');
+  setTimeout(()=>add(f[0]+'\n'+lines,'bot','summary'),450);
+  say('Thank you, '+data.name+'. Your request has been passed to our team. This is a request, not a confirmation: a person will contact you. (Demo: nothing was actually sent.)',1100);
+  flow=null;setTimeout(menu,1200);
+}
+function answer(text){
+  const t=text.toLowerCase();
+  if(['hour','open','close','weekend','sunday','saturday'].some(k=>t.includes(k))){say(B.hours);return}
+  if(['person','human','someone','call me','speak','talk'].some(k=>t.includes(k))){start('callback');return}
+  const hit=B.faq.find(f=>f[0].some(k=>t.includes(k)));
+  if(hit){say(hit[1]);if(hit[2]){const label=(B.menu.find(m=>m[1]===hit[2])||['Continue'])[0];setTimeout(()=>setQuick([[label,()=>start(hit[2])],['Something else',menu]]),500)}return}
+  if(['price','cost','how much','quote','estimate'].some(k=>t.includes(k))&&B.menu[0]){say('Prices depend on your needs. I can collect a few details and the team will get back to you.');setTimeout(()=>setQuick([[B.menu[0][0],()=>start(B.menu[0][1])],['Something else',menu]]),500);return}
+  say('I am not sure about that one. I can take your question and a member of the team will get back to you.');
+  setTimeout(()=>setQuick([['Talk to a person',()=>start('callback')],['Show options',menu]]),500);
+}
+function load(key){
+  B=BIZ[key]||BIZ.garage;flow=null;
+  document.documentElement.style.setProperty('--brand',B.color);
+  $('bizName').textContent=B.name;$('bizInfo').textContent=B.info;$('bizTitle').textContent=B.title;$('bizText').textContent=B.text;
+  $('bizCards').innerHTML='';B.cards.forEach(([b,s])=>{const d=document.createElement('div');const x=document.createElement('b');x.textContent=b;const y=document.createElement('small');y.textContent=s;d.append(x,y);$('bizCards').appendChild(d)});
+  $('chatName').textContent='Virtual Assistant';document.title=B.name+' · Virtual Assistant Demo';
+  [...$('picker').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===key));
+  msgs.innerHTML='';add('Hi! I am the virtual assistant for '+B.name.toLowerCase()+'. I can answer common questions and take your request, any time of day. A person from our team reviews every request. How can I help?');menu();
+  $('chat').classList.remove('closed');$('launch').classList.remove('show');
+}
+Object.entries(BIZ).forEach(([k,v])=>{const b=document.createElement('button');b.type='button';b.textContent=v.label;b.dataset.k=k;b.onclick=()=>{history.replaceState(null,'','#'+k);load(k)};$('picker').appendChild(b)});
+$('form').addEventListener('submit',e=>{e.preventDefault();const v=$('txt').value.trim();if(!v)return;$('txt').value='';add(v,'user');flow?next(v):answer(v)});
+$('close').onclick=()=>{$('chat').classList.add('closed');$('launch').classList.add('show')};
+$('launch').onclick=()=>{$('chat').classList.remove('closed');$('launch').classList.remove('show')};
+window.addEventListener('hashchange',()=>load(location.hash.slice(1)));
+load(location.hash.slice(1)||'garage');
+}
+</script>
+</body>
+</html>
