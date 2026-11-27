@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alainclaudeebanda95.github.io/ebanda-enertech/sitemap.xml
